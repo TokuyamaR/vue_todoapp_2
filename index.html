@@ -7,11 +7,44 @@
 </head>
 <div id="app">
     <!--Todoの新規作成-->
+    <h2>Create Todo</h2>
+    <form class="add-form" v-on:submit.prevent="doAdd">
+        comment: <input type="text" ref="comment">
+        <button type="submit">Submit</button>
+    </form>
 
     <!--絞り込みボタン-->
+    <label v-for="option in options">
+        <input type="radio"
+               v-model="current"
+               v-bind:value="option.value">
+        {{ option.label }}
+    </label>
 
     <!--Todoリスト-->
-
+    <p class="item-length">{{ filterTodos.length }}件を表示中</p>
+    <table>
+        <thead>
+        <tr>
+            <th class="id">ID</th>
+            <th class="comment">コメント</th>
+            <th class="state">状態</th>
+            <th class="button">-</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="item in filterTodos" v-bind:key="item.id" v-bind:class="{done:item.state}">
+            <th class="id">{{ item.id }}</th>
+            <td class="comment">{{ item.comment }}</td>
+            <td class="state">
+                <button class="edit-state" v-on:click="doChangeState(item)">{{ labels[item.state] }}</button>
+            </td>
+            <td class="button">
+                <button class="delete" v-on:click="doRemoveItem(item)">Delete</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="app.js"></script>
